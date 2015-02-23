@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-4.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<context:component-scan base-package="com.ph.sinonet.spring" >
+		<context:include-filter type="regex" expression=".dao.*" />
+		<context:include-filter type="regex" expression=".service.*" />
+		<context:include-filter type="regex" expression=".security.*"/>
+	</context:component-scan>
+
+	<!-- declaring multiple properties -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="localOverride" value="false" />
+		<property name="locations">
+			<list>
+				<value>classpath:/conf/properties/datasource.properties</value>
+				<value>classpath:/conf/properties/hibernate.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	
+	<!-- bean for connection pooling -->
+	<bean id="spring4Datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${c3p0.driverClassName}" />
+		<property name="jdbcUrl" value="${c3p0.databaseurl}" />
+		<property name="user" value="${c3p0.username}" />
+		<property name="password" value="${c3p0.password}" />
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="maxStatements" value="${c3p0.maxStatements}" />
+		<property name="testConnectionOnCheckout" value="${c3p0.testConnection}" />
+		<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
+	</bean>
+	
+	<bean id="encoder" class="com.ph.sinonet.spring.util.HibernatePBEStringEncryptor" />
+	<bean id="entityInterceptor" class="com.ph.sinonet.spring.model.interceptor.EntityInterceptor" />
+	
+	
+	<!-- messsage encryptor -->
+	<bean class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor">
+		<property name="encryptor" ref="encoder">
+		</property>
+		<property name="registeredName" value="hibernateStringEncryptor" />
+	</bean>   
+	
+	
+	<!-- LocalSessionFactoryBean for Spring 4 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	
+		<property name="dataSource" ref="spring4Datasource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+			</props>
+		</property>
+		<property name="entityInterceptor" ref="entityInterceptor" />
+		<property name="packagesToScan" value="com.ph.sinonet.spring.model.entity" />
+	</bean>
+	
+	<!-- TransactionManager for Transactional -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" order="1" />
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager"	>
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			<tx:method name="search*" read-only="true" />
+			<tx:method name="*" rollback-for="Throwable" timeout="60" />
+		</tx:attributes>
+	</tx:advice>
+
+
+	<aop:config>
+		<aop:pointcut id="allservices"
+			expression="execution(* com.ph.sinonet.spring.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
+	</aop:config>
+	
+	
+ 	<import resource="applicationContext-security.xml" />  
+ </beans>
+
