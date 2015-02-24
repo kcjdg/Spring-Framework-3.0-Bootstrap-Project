@@ -6,12 +6,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
   <head>
     <title>Login</title>
-    
+    <meta charset="utf-8">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -25,20 +24,21 @@
 	<form  name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
   	<table>
   		<tr>
-  			<td>Username : </td>
+  			<td><spring:message code="label.username" /> : </td>
   			<td><input type='text' name='j_username' /></td>	
   		</tr>
   		<tr>
-  			<td>Password : </td>
+  			<td><spring:message code="label.password" />: </td>
   			<td><input type='password' name='j_password'></td>
   		</tr>
   		<tr>
-  			<td>Remember me : </td>
+  			<td><spring:message code="label.rememberMe" />: </td>
   			<td><input type="checkbox" name="_spring_security_remember_me" /></td>
   		</tr>
   		<tr>
   			<td></td>
-  			<td><input type="submit" value="Submit" /></td>
+  			<spring:message code="label.submit"  var="labelSubmit"/>
+  			<td><input type="submit" value="${labelSubmit}" /></td>
   		</tr>
   	</table>
   	</form>

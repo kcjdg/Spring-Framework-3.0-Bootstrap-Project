@@ -120,9 +120,4 @@ public class User{
 	}
 	
 	
-	@Override
-	public String toString() {
-		return "User [username = "+username+", password = "+password+", credit = "+credit+", email = "+email+", createTime = "+createTime+", updateTime = "+updateTime+"]";
-	}
-
 }

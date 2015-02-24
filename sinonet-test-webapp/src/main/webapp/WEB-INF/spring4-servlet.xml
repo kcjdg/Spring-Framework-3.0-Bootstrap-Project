@@ -14,25 +14,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 	
 	<context:component-scan base-package="com.ph.sinonet.spring.controller" /> 
 	<mvc:annotation-driven />   
-
-<!-- <bean id="localeResolver" class="org.springframework.web.servlet.il8n.SessionLocaleResolver">
-		<property name="defaultLocale" value="en"/>
-	</bean>
-	
-	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.1l8n.LocaleChangeInterceptor">
-		<property name="paramName" value="language"/>
-	</bean>
-	
-	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
-		<property name="interceptors">
-			<list>	
-				<ref bean="localChangeInterceptor"></ref>
-			</list>
-		</property>
-	</bean> 
--->
-		
-	    
+    
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 		    <value>/jsp/</value>
@@ -42,5 +24,28 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		</property>    
 	</bean>
 	
+	 <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:/conf/locales/labels/label</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+
+	
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en"/>
+		<property name="cookieMaxAge" value="-1"/>
+	</bean> 
+	
+	<mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="locale" />
+        </bean>
+    </mvc:interceptors>
+ 	
 </beans>
 

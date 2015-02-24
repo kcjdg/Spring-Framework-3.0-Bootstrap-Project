@@ -35,7 +35,7 @@
 	</security:http>
 
  
-	<security:authentication-manager >
+	<security:authentication-manager>
 		<security:authentication-provider user-service-ref="userDetailsService" >
 			<security:password-encoder hash="sha" />		
 		</security:authentication-provider>

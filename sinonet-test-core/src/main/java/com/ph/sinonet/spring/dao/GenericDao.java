@@ -1,14 +1,30 @@
 package com.ph.sinonet.spring.dao;
 
-import java.io.Serializable;
+import javax.annotation.PostConstruct;
 
+import org.hibernate.SessionFactory;
+import org.jboss.logging.annotations.Pos;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+
+import com.ph.sinonet.spring.model.entity.User;
 
 @Repository
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class GenericDao<T> extends AbstractHibernateDao<T> {
 	
+	@Autowired
+	private SessionFactory sessionFactory;
 	
+	@PostConstruct
+	public void init(){
+		setSessionFactory(sessionFactory);
+	}
+	
+	public GenericDao() {
+		
+	}
+
 }

@@ -29,6 +29,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</property>
 	</bean>
 
+
+
+
+	
 	
 	<!-- bean for connection pooling -->
 	<bean id="spring4Datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -45,8 +49,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 	
 	<bean id="encoder" class="com.ph.sinonet.spring.util.HibernatePBEStringEncryptor" />
-	<bean id="entityInterceptor" class="com.ph.sinonet.spring.model.interceptor.EntityInterceptor" />
 	
+	<!-- <bean id="entityInterceptor" class="com.ph.sinonet.spring.model.interceptor.EntityInterceptor" /> -->
 	
 	<!-- messsage encryptor -->
 	<bean class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor">

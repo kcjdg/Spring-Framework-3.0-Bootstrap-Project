@@ -1,6 +1,8 @@
 package com.ph.sinonet.spring.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -12,19 +14,23 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public abstract class AbstractHibernateDao<T >{
+public abstract class AbstractHibernateDao<T>{
 
 	private Class <T> clazz;
 	
-	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public AbstractHibernateDao() {
+		Type t = getClass().getGenericSuperclass();
+        ParameterizedType pt = (ParameterizedType) t;
+        setClazz((Class) pt.getActualTypeArguments()[0]);
+    }
 	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	protected void setClazz(Class <T> clazzToSet){
+	private void setClazz(Class <T> clazzToSet){
 		this.clazz = clazzToSet;
 	}
 	
@@ -51,7 +57,6 @@ public abstract class AbstractHibernateDao<T >{
 	public void delete(T entity){
 		getCurrentSession().delete(entity);
 	}
-	
 	
 	public T findById(Object id){
 		return (T) getCurrentSession().get(clazz, (Serializable) id);
@@ -83,13 +88,12 @@ public abstract class AbstractHibernateDao<T >{
 	}
 	
 	
-	protected final Criteria createCriteria(){
+	protected  Criteria createCriteria(){
 		return getCurrentSession().createCriteria(clazz);
 	}
 	
-	protected final Session getCurrentSession(){
+	protected  Session getCurrentSession(){
 		return sessionFactory.getCurrentSession();
 	}
-	
 	
 }

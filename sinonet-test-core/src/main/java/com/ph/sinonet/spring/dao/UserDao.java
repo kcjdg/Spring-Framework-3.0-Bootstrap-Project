@@ -13,33 +13,25 @@ import com.ph.sinonet.spring.model.entity.User;
 
 @Repository
 @Transactional
-public class UserDao {
+public class UserDao extends GenericDao<User>{
 
-	private GenericDao<User> userDao;
-
-	@Autowired
-	public void setUserDao(GenericDao<User> userDao) {
-		this.userDao = userDao;
-		userDao.setClazz(User.class);
-	}
-
-
+	
 	public User getUserByName(String name){
-		return userDao.findById(name);
+		return findById(name);
 	}
 
 	
 	public void saveUser(User user){
-		userDao.save(user);
+		save(user);
 	}
 
 	public void updateUser(User user){
-		userDao.update(user);
+		update(user);
 	}
 	
 	
 	public User getUserAuth(String name){
-		Criteria criteria = userDao.getCurrentSession().createCriteria(User.class);
+		Criteria criteria = getCurrentSession().createCriteria(User.class);
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("username"))
 				.add(Projections.property("password")));
@@ -49,7 +41,7 @@ public class UserDao {
 	}
 	
 	public User findUserWithLockMode(String name, LockMode lock){
-		return userDao.findById(name, lock);
+		return findById(name, lock);
 	}
 	
 }

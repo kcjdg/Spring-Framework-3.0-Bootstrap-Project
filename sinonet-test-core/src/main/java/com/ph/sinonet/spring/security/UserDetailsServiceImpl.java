@@ -27,7 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		User r = userService.getUser(username);
-		System.out.println(r);
 		
 		if(r == null){
 			throw new UsernameNotFoundException("No such username :" + username);
@@ -42,6 +41,5 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	    
 	    return new org.springframework.security.core.userdetails.User(username, r.getPassword(),authList);
 	}
-
 	
 }

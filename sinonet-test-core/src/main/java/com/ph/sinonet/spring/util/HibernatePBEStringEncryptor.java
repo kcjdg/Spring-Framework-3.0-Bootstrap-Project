@@ -3,6 +3,8 @@ package com.ph.sinonet.spring.util;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
+import com.google.common.base.CharMatcher;
+
 
 /**
  * See : http://security.stackexchange.com/questions/10049/explaining-security-vs-performace-to-a-non-tech-superior
@@ -29,16 +31,14 @@ public class HibernatePBEStringEncryptor implements PBEStringEncryptor {
 
 	public String encrypt(String message) {
 		String hashValue = HashingUtil.sha1(message);
-		System.out.println(hashValue);
 		String encryptMessage = standardPBEStringEncryptor.encrypt(hashValue);
 		String finalMsg = PREFIX + encryptMessage + SUFFIX;
 		return finalMsg;
 	}
 
 	public String decrypt(String encryptedMessage) {
-/*		String finalMsg = CharMatcher.anyOf(PREFIX+SUFFIX).trimFrom(encryptedMessage);
-		return standardPBEStringEncryptor.decrypt(finalMsg);*/
-	return encryptedMessage;
+	String finalMsg = CharMatcher.anyOf(PREFIX+SUFFIX).trimFrom(encryptedMessage);
+		return standardPBEStringEncryptor.decrypt(finalMsg);
 	}	
 
 	public void setPassword(String password) {
