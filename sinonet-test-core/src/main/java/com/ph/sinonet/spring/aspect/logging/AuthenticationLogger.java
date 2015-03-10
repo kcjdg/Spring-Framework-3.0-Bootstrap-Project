@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 /**
  * Use if interface
@@ -27,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 
 @Aspect
+@Component
 public class AuthenticationLogger {
 
 	
@@ -36,16 +38,9 @@ public class AuthenticationLogger {
 	private HttpServletRequest request;
 	
 	
-	@Pointcut("within(com.ph.sinonet.spring.service.interfaces.*+))")
-	public void servicesAdvice(){}
-		
 	
 	@Pointcut("execution(* org.springframework.security.authentication.AuthenticationProvider+.*(..))")
-	public void userAuthProvider(){}
-	
-	
-	@Pointcut("!execution(* get*(..)) && !execution(* search*(..)) && !execution(* load*(..)) && !execution(* find*(..))")
-	public void excludedMethods(){}
+	public void loginAdvice(){}
 	
 	
 	@Pointcut("execution(* org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler.logout(..)) && args (request,response,authentication)")
@@ -53,41 +48,20 @@ public class AuthenticationLogger {
 	
 	
 	
-	@AfterReturning(pointcut="userAuthProvider()",returning="authentication")
+	@AfterReturning(pointcut="loginAdvice()",returning="authentication")
 	public void checkAfterLogin(Authentication authentication){
 		if(authentication.isAuthenticated()){
 			LOGGER.info("User {} is authenticated with role {} and ip of {}", authentication.getName(), authentication.getAuthorities(),request.getRemoteAddr());
 		}
 	}
 	
-	
 	@After("logoutAdvice(request,response,authentication)")
 	public void checkAfterLogout(JoinPoint jp,HttpServletRequest request,HttpServletResponse response, Authentication authentication){
 		SecurityContext context = SecurityContextHolder.getContext();
-		if(context.getAuthentication() == null && isAuthenticated(authentication)){
+		if(context.getAuthentication() == null && authentication != null){
 			LOGGER.info("User {} is successfully logout " , authentication.getName());
 		}
 	}
-	
-	
-	@Before("servicesAdvice() && excludedMethods()")
-	public void checkUserAuthentication(JoinPoint jp){
-		Object target = jp.getTarget();
-		Authentication auth = getCurrentAuth();
-		if(isAuthenticated(auth)){
-			Logger logger = LoggerFactory.getLogger(target.getClass());
-			logger.debug("Method hit : {} , Username :  {}", jp.getSignature().getName(), auth.getName());
-		}
-	}
-	
 
-	private Authentication getCurrentAuth(){
-		return SecurityContextHolder.getContext().getAuthentication();
-	}
 	
-	
-	private boolean isAuthenticated(Authentication auth){
-		return (auth == null) ? false : auth.isAuthenticated();
-	}
-
 }

@@ -100,7 +100,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
 	</aop:config>
 	
-	<import resource="applicationContext-aop.xml" />  
+	<aop:aspectj-autoproxy/>
  	<import resource="applicationContext-security.xml" />  
  </beans>
 
