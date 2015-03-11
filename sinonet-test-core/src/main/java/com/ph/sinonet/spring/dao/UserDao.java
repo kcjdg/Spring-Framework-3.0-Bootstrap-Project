@@ -29,14 +29,14 @@ public class UserDao extends GenericDao<User>{
 		update(user);
 	}
 	
-	
 	public User getUserAuth(String name){
 		Criteria criteria = getCurrentSession().createCriteria(User.class);
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("username"))
 				.add(Projections.property("password")));
-		criteria.add(Restrictions.eq("usernmae", name));
+		criteria.add(Restrictions.eq("username", name));
 		criteria.setResultTransformer(Transformers.aliasToBean(User.class));
+		
 		return (User) criteria.uniqueResult();
 	}
 	

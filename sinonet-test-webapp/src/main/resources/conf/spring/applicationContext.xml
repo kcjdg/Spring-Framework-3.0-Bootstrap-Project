@@ -50,7 +50,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	
 	<bean id="encoder" class="com.ph.sinonet.spring.util.HibernatePBEStringEncryptor" />
 	
-	<!-- <bean id="entityInterceptor" class="com.ph.sinonet.spring.model.interceptor.EntityInterceptor" /> -->
+<!--  	<bean id="entityInterceptor" class="com.ph.sinonet.spring.model.interceptor.EntityInterceptor" />  -->
 	
 	<!-- messsage encryptor -->
 	<bean class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor">
@@ -72,7 +72,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
 			</props>
 		</property>
-		<property name="entityInterceptor" ref="entityInterceptor" />
+		<!-- <property name="entityInterceptor" ref="entityInterceptor" /> -->
 		<property name="packagesToScan" value="com.ph.sinonet.spring.model.entity" />
 	</bean>
 	
@@ -99,8 +99,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			expression="execution(* com.ph.sinonet.spring.service.impl.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
 	</aop:config>
-	
-	<aop:aspectj-autoproxy/>
- 	<import resource="applicationContext-security.xml" />  
+	<import resource="applicationContext-aop.xml" />
+	<import resource="applicationContext-security.xml" />
+
  </beans>
 

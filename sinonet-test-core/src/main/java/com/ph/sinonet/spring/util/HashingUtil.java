@@ -21,6 +21,6 @@ public class HashingUtil {
 	public static String sha1(String message){
 		return Hashing.sha1().hashString(message, UTF8).toString();
 	}
-	
+
 	
 }

@@ -4,16 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hibernate.EmptyInterceptor;
-import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.ph.sinonet.spring.model.entity.User;
 
 
-@Component
+//@Component
 public class EntityInterceptor extends EmptyInterceptor {
 	
 	private static final Logger log = LoggerFactory.getLogger(EntityInterceptor.class);

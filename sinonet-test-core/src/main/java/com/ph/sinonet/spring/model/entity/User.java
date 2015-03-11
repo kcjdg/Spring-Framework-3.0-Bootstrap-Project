@@ -1,13 +1,12 @@
 package com.ph.sinonet.spring.model.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,12 +14,14 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.jasypt.hibernate4.type.EncryptedStringType;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ph.sinonet.spring.model.constant.EntityConst;
+import com.ph.sinonet.spring.enums.FlagType;
+import com.ph.sinonet.spring.model.constant.ColumnDefinition;
+
 
 
 @TypeDef(name="encryptPassword",typeClass=EncryptedStringType.class,parameters={
@@ -30,14 +31,13 @@ import com.ph.sinonet.spring.model.constant.EntityConst;
 @Table(name="user")
 @DynamicInsert
 @DynamicUpdate
+@SelectBeforeUpdate //needed for @DynamicUpdate 
 public class User{
 	
 	
 	/**
 	 * 
 	 */
-	
-	
 	private String username;
 	
 	private String password;
@@ -45,6 +45,12 @@ public class User{
 	private String email;
 	private Date createTime;
 	private Date updateTime;
+	private String lastLoginIp;
+	private Date lastLoginTime;
+	private FlagType flag;
+	
+	
+	
 	@Id
 	@Column(name="username")
 	public String getUsername() {
@@ -58,10 +64,13 @@ public class User{
 		return password;
 	}
 	
+	
 	@Column(name="credit")
 	public Double getCredit() {
 		return credit;
 	}
+	
+	
 	@Column(name="email")
 	public String getEmail() {
 		return email;
@@ -73,18 +82,38 @@ public class User{
 		return createTime;
 	}
 	
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="update_time",columnDefinition=EntityConst.ColumDefinition.TIMESTAMP_UPDATE)
+	@Column(name="update_time",columnDefinition=ColumnDefinition.TIMESTAMP_UPDATE)
 	public Date getUpdateTime() {
 		return updateTime;
 	}
 	
+	
+	@Column(name="last_login_ip")
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+	
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="last_login_time")
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
 	
-	
+
+	@Column(name="flag",columnDefinition=ColumnDefinition.TINYINT)
+	@Enumerated(EnumType.ORDINAL)
+	public FlagType getFlag() {
+		return flag;
+	}
+
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 
 
 	public void setPassword(String password) {
@@ -109,6 +138,20 @@ public class User{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
+
+
+	public void setFlag(FlagType flag) {
+		this.flag = flag;
+	}
+
 	
 }

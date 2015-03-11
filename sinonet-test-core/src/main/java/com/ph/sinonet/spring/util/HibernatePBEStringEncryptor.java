@@ -1,5 +1,8 @@
 package com.ph.sinonet.spring.util;
 
+import java.security.Provider;
+import java.security.Security;
+
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
@@ -12,7 +15,6 @@ import com.google.common.base.CharMatcher;
  * @author sinonet
  *
  */
-
 public class HibernatePBEStringEncryptor implements PBEStringEncryptor {
 
 	private StandardPBEStringEncryptor standardPBEStringEncryptor;
@@ -29,6 +31,7 @@ public class HibernatePBEStringEncryptor implements PBEStringEncryptor {
 		standardPBEStringEncryptor.setKeyObtentionIterations(10000);
 	}
 
+	@Override
 	public String encrypt(String message) {
 		String hashValue = HashingUtil.sha1(message);
 		String encryptMessage = standardPBEStringEncryptor.encrypt(hashValue);
@@ -36,16 +39,24 @@ public class HibernatePBEStringEncryptor implements PBEStringEncryptor {
 		return finalMsg;
 	}
 
+	@Override
 	public String decrypt(String encryptedMessage) {
-	String finalMsg = CharMatcher.anyOf(PREFIX+SUFFIX).trimFrom(encryptedMessage);
-		return standardPBEStringEncryptor.decrypt(finalMsg);
+		return encryptedMessage;
 	}	
 
+	
+	public String manualDecrypt(String encryptedMessage){
+		String finalMsg = CharMatcher.anyOf(PREFIX+SUFFIX).trimFrom(encryptedMessage);
+		return standardPBEStringEncryptor.decrypt(finalMsg);
+	}
+	
+	
+	@Override
 	public void setPassword(String password) {
 		standardPBEStringEncryptor.setPassword(password);
 	}
 
-	
+
 //	public static void getSecurityProviders() {
 //		for (Provider provider : Security.getProviders()) {
 //			System.out.println("Provider: " + provider.getName());
@@ -60,7 +71,6 @@ public class HibernatePBEStringEncryptor implements PBEStringEncryptor {
 		HibernatePBEStringEncryptor encryptor = new HibernatePBEStringEncryptor();
 		String en = encryptor.encrypt("123123");
 		System.out.println(en);
-		System.out.println(encryptor.decrypt(en));
 	}
 	
 	

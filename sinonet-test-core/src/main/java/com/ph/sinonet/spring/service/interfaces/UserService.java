@@ -9,6 +9,9 @@ public interface UserService {
 	
 	public void update(User user);
 	
+	public void updateLastVisit(User user, String ip);
+	
 	public User getUser(String username);
+	
 	
 }
