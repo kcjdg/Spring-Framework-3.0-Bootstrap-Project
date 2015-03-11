@@ -99,6 +99,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			expression="execution(* com.ph.sinonet.spring.service.impl.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
 	</aop:config>
+	
+	
 	<import resource="applicationContext-aop.xml" />
 	<import resource="applicationContext-security.xml" />
 
