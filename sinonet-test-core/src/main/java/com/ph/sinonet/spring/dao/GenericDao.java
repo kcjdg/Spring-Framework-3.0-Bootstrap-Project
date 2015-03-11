@@ -26,7 +26,4 @@ public class GenericDao<T> extends AbstractHibernateDao<T> {
 	public GenericDao() {}
 
 	
-	@Override
-	public void setSessionFactory(SessionFactory sessionFactory) {}
-	
 }

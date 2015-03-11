@@ -22,7 +22,7 @@
 
  		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:form-login login-page="/login.html" default-target-url="/spring/success.html" authentication-failure-url="/accessDenied.html" />
-		<security:logout logout-success-url="/logout.html" />
+		<security:logout logout-url="/logout.html" />
 
 		<security:logout delete-cookies="JSESSIONID" />
 		

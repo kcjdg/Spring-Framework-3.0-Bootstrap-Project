@@ -45,7 +45,6 @@ public class User{
 	private String email;
 	private Date createTime;
 	private Date updateTime;
-	private String testField;
 	@Id
 	@Column(name="username")
 	public String getUsername() {
@@ -80,19 +79,11 @@ public class User{
 		return updateTime;
 	}
 	
-	@Column(name="test",columnDefinition="CHAR(7)")
-	public String getTestField() {
-		return testField;
-	}
+
 	
 	
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-
-	public void setTestField(String testField) {
-		this.testField = testField;
 	}
 
 
