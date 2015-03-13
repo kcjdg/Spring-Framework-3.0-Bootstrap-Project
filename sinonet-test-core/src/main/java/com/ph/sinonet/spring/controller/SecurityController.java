@@ -13,7 +13,6 @@ public class SecurityController {
 	private UserService service;
 	
 	
-	
 	@RequestMapping("/login")
 	public String helloPage(){
 		return "login";

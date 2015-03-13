@@ -11,6 +11,6 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	<aop:aspectj-autoproxy />
 	
 	<bean id="authLogger" class="com.ph.sinonet.spring.aspect.logging.AuthenticationLogger" />
-<!-- 	<bean id="serviceLogger" class="com.ph.sinonet.spring.aspect.logging.ServiceLogger"/>
- -->
+<!-- 	<bean id="serviceLogger" class="com.ph.sinonet.spring.aspect.logging.ServiceLogger"/>-->
+
 </beans>

@@ -18,7 +18,12 @@ public enum FlagType {
 		return (isEnable) ? FlagType.ENABLE : FlagType.DISABLE; 
 	}
 	
-	public static FlagType getByNum(int num){
-		return (num == 1) ? FlagType.ENABLE : FlagType.DISABLE;
+	public static FlagType getByNum(int type){
+		return (type == 1) ? FlagType.ENABLE : FlagType.DISABLE;
 	}
+	
+	public static boolean getBool(int type){
+		return (type == 1) ? true : false;
+	}
+	
 }

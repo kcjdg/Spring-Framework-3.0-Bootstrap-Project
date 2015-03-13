@@ -15,22 +15,22 @@
 	
  	<bean id="userDetailsService" class="com.ph.sinonet.spring.security.UserDetailsServiceImpl" />
  	<security:http auto-config="true" use-expressions="true">
-		<security:intercept-url pattern="/login.html" access="permitAll" />
-		<security:intercept-url pattern="/logout.html" access="isAuthenticated()" />
-		<security:intercept-url pattern="/accessDenied.html" access="permitAll" />
+		<security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/logout" access="isAuthenticated()" />
+		<security:intercept-url pattern="/accessDenied" access="permitAll" />
 		<security:intercept-url pattern="/spring/**" access="hasRole('ROLE_USER')" />
 
  		<security:intercept-url pattern="/**" access="permitAll" />
-		<security:form-login login-page="/login.html" default-target-url="/spring/success.html" authentication-failure-url="/accessDenied.html" />
-		<security:logout logout-url="/logout.html" />
+		<security:form-login login-page="/login" default-target-url="/spring/success" authentication-failure-url="/accessDenied" />
+		<security:logout logout-url="/logout" />
 
 		<security:logout delete-cookies="JSESSIONID" />
 		
 		<security:remember-me key="uniqueAndSecretKey" user-service-ref="userDetailsService"/>
 		
 		<security:session-management
-			invalid-session-url="/login.html">
-			<security:concurrency-control expired-url="/logout.html" />
+			invalid-session-url="/login">
+			<security:concurrency-control expired-url="/logout" />
 		</security:session-management>
 	</security:http>
 

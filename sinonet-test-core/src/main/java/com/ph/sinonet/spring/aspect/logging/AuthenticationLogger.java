@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import com.ph.sinonet.spring.model.entity.User;
 import com.ph.sinonet.spring.service.interfaces.UserService;
@@ -53,6 +54,7 @@ public class AuthenticationLogger {
 	
 	@AfterReturning(pointcut="loginAdvice()",returning="authentication")
 	public void checkAfterLogin(Authentication authentication){
+		
 		if(authentication.isAuthenticated()){
 			String ip = request.getRemoteAddr();
 			LOGGER.info("User {} is authenticated with role {} and ip of {}", authentication.getName(), authentication.getAuthorities(), ip);

@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import com.ph.sinonet.spring.enums.FlagType;
 import com.ph.sinonet.spring.model.entity.User;
 import com.ph.sinonet.spring.service.interfaces.UserService;
 import com.ph.sinonet.spring.util.HibernatePBEStringEncryptor;
@@ -30,12 +32,14 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
+		
+		
+		
 		User user = userService.getUser(username);
 	
 		if(user == null){
 			throw new UsernameNotFoundException("No such username :" + username);
 		}
-		
 		
 		//encrypt password
 		String decryptedPassword = encryptor.manualDecrypt(user.getPassword());
@@ -44,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		
 	    boolean accountNonExpired = true;
 	    boolean credentialsNonExpired = true;
-	    boolean accountNonLocked = true;
+	    boolean accountNonLocked = FlagType.getBool(user.getFlag().getType());
 	    
 	    List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
 	    authList.add(new SimpleGrantedAuthority("ROLE_USER"));

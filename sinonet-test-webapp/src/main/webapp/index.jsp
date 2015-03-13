@@ -11,8 +11,8 @@
   </head>
   
   <body>
-  	
-  		<% response.sendRedirect("/login.html"); %>
-	  	
+  
+  		<% response.sendRedirect("/login"); %>
+	  	  	
   </body>
 </html>
